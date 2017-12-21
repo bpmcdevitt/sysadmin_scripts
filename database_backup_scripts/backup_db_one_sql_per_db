@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# backup all databases, one sql file per db
+
+usage()
+{
+	echo "Usage: "$0""
+}
+
+list_dbs=$(mysql -e 'show databases \G' | grep Database | awk ' { print $2 } ')
+
+if [ $# != 0 ]; then
+	usage
+	exit
+else
+
+	for db in $list_dbs; 
+	do 
+		mysqldump --database $db >  ${db}.sql
+	done
+fi
